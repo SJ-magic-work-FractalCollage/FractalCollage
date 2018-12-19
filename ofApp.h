@@ -6,6 +6,7 @@
 ************************************************************/
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ofxSyphon.h"
 #include "ofxFastFboReader.h"
 
 #include "sj_common.h"
@@ -75,7 +76,8 @@ private:
 	********************/
 	int CamId[NUM_CAMS];
 	ofVideoGrabber *VideoCam[NUM_CAMS];
-	
+	ofxSyphonServer SyphonServer_Video[NUM_CAMS];
+
 	int id_Parts;
 	int id_Mosaic;
 	
@@ -100,6 +102,7 @@ private:
 	********************/
 	ofFbo fbo_FractalCollage;
 	ofShader shader_FractalCollage;
+	ofxSyphonServer SyphonServer_FractalCollage;
 	
 	/****************************************
 	****************************************/
@@ -113,7 +116,7 @@ private:
 	int CamId_Next(int _id);
 	void load_and_start_backMusic();
 	void On_Drug_MusicSlider();
-	
+	void publish_syphon();
 
 public:
 	/****************************************

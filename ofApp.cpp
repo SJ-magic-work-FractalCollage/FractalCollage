@@ -78,6 +78,12 @@ void ofApp::setup(){
 	
 	/********************
 	********************/
+	SyphonServer_Video[0].setName("FractalCollage_Video0");
+	SyphonServer_Video[1].setName("FractalCollage_Video1");
+	SyphonServer_FractalCollage.setName("FractalCollage");
+	
+	/********************
+	********************/
 	load_and_start_backMusic();
 }
 
@@ -131,7 +137,7 @@ void ofApp::setup_Gui()
 	/********************
 	********************/
 	gui.add(gui__y_ofs.setup("y_ofs", 0, 0, IMG_HEIGHT/2 - 1));
-	gui.add(gui__AnimSpeed_PixPerSec.setup("AnimSpeed", 35, 0, 50));
+	gui.add(gui__AnimSpeed_PixPerSec.setup("AnimSpeed", 40, 0, 50));
 	gui.add(gui__b_Anim.setup("b_Anim", false));
 	gui.add(gui__MusicPos.setup("MusicPos", 0, 0, 1.0));
 	
@@ -364,6 +370,10 @@ void ofApp::draw(){
 	
 	/********************
 	********************/
+	publish_syphon();
+	
+	/********************
+	********************/
 	if(b_DispGUI){
 		gui.draw();
 	
@@ -383,6 +393,21 @@ void ofApp::draw(){
 	if(now < 10.0) fprintf(fp_Log, "%f\n", ofGetElapsedTimef());
 	
 	LastINT = now;
+}
+
+/******************************
+******************************/
+void ofApp::publish_syphon()
+{
+	for(int i = 0; i < NUM_CAMS; i++){
+		ofTexture tex = VideoCam[i]->getTextureReference();
+		SyphonServer_Video[i].publishTexture(&tex);
+	}
+	
+	{
+		ofTexture tex = fbo_FractalCollage.getTextureReference();
+		SyphonServer_FractalCollage.publishTexture(&tex);
+	}
 }
 
 /******************************
