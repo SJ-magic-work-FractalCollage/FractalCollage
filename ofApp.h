@@ -42,6 +42,10 @@ private:
 	enum DRAW_CONTENTS{
 		DRAW_CONTENTS__CAM0,
 		DRAW_CONTENTS__CAM1,
+		
+		DRAW_CONTENTS__MOSAIC,
+		DRAW_CONTENTS__SPLIT,
+		
 		DRAW_CONTENTS__COLLAGE,
 	};
 	
@@ -51,6 +55,8 @@ private:
 	********************/
 	float now;
 	float LastINT;
+	
+	int png_id;
 	
 	/********************
 	********************/

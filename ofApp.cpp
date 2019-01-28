@@ -15,6 +15,7 @@ ofApp::ofApp(int _CamId_0, int _CamId_1)
 , id_Parts(0)
 , id_Mosaic(1)
 , Draw_Contents(DRAW_CONTENTS__COLLAGE)
+, png_id(0)
 {
 	CamId[0] = _CamId_0;
 	CamId[1] = _CamId_1;
@@ -288,6 +289,9 @@ void ofApp::draw_FractalCollage_to_fbo()
 			
 			shader_FractalCollage.setUniform1f( "AveParts", Ave_Parts);
 			
+			if(Draw_Contents == DRAW_CONTENTS__SPLIT)	shader_FractalCollage.setUniform1i( "b_Enable_MosaicMix", false);
+			else										shader_FractalCollage.setUniform1i( "b_Enable_MosaicMix", true);
+			
 			shader_FractalCollage.setUniformTexture( "texture_1", fbo_Mosaic.getTexture(), 1);
 			
 			ofSetColor( 255, 255, 255 );
@@ -359,6 +363,14 @@ void ofApp::draw(){
 			VideoCam[1]->draw(0, 0, ofGetWidth(), ofGetHeight());
 			break;
 			
+		case DRAW_CONTENTS__MOSAIC:
+			fbo_Mosaic.draw(0, 0, ofGetWidth(), ofGetHeight());
+			break;
+			
+		case DRAW_CONTENTS__SPLIT:
+			fbo_FractalCollage.draw(0, 0, ofGetWidth(), ofGetHeight());
+			break;
+			
 		case DRAW_CONTENTS__COLLAGE:
 			fbo_FractalCollage.draw(0, 0, ofGetWidth(), ofGetHeight());
 			break;
@@ -423,6 +435,14 @@ void ofApp::keyPressed(int key){
 			break;
 			
 		case '2':
+			Draw_Contents = DRAW_CONTENTS__MOSAIC;
+			break;
+			
+		case '3':
+			Draw_Contents = DRAW_CONTENTS__SPLIT;
+			break;
+			
+		case '4':
 			Draw_Contents = DRAW_CONTENTS__COLLAGE;
 			break;
 			
@@ -434,6 +454,20 @@ void ofApp::keyPressed(int key){
 			b_SoundPaused = !b_SoundPaused;
 			sound.setPaused(b_SoundPaused);
 			break;
+			
+		case ' ':
+			{
+				char buf[BUF_SIZE_S];
+				
+				sprintf(buf, "image_%d.png", png_id);
+				ofSaveScreen(buf);
+				// ofSaveFrame();
+				printf("> %s saved\n", buf);
+				
+				png_id++;
+			}
+			break;
+			
 	}
 }
 

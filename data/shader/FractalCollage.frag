@@ -15,6 +15,7 @@ uniform int x_ofs;
 uniform int y_ofs;
 
 uniform float AveParts;
+uniform int b_Enable_MosaicMix = 1; // true
 
 uniform sampler2DRect texture_0; // fbo_Parts
 uniform sampler2DRect texture_1; // fbo_Mosaic
@@ -55,10 +56,12 @@ void main(){
 	/********************
 	mosaic imageを反映
 	********************/
-	vec4 color_mosaic = texture2DRect(texture_1, Coord_2);
-	val = val + (color_mosaic.r - AveParts);
-	if(val < 0.0) val = 0;
-	if(1.0 < val) val = 1.0;
+	if(b_Enable_MosaicMix != 0){
+		vec4 color_mosaic = texture2DRect(texture_1, Coord_2);
+		val = val + (color_mosaic.r - AveParts);
+		if(val < 0.0) val = 0;
+		if(1.0 < val) val = 1.0;
+	}
 	
 	color = vec4(val, val, val, 1.0);
 	
